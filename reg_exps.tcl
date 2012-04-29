@@ -10,7 +10,7 @@ proc ipAddToRegExp { ipAddr } {
 
 proc processShowIp {ip_addr log} {
 	set normalizedIp [ipAddToRegExp $ip_addr]
-	set regExp [ concat {(^DEFAULT_VLAN[ |a-z]+)} $normalizedIp {(.*$)} ]
+	set regExp [ concat {(^DEFAULT_VLAN.*)} $normalizedIp {(.*$)} ]
 	
 	if {[regexp -nocase $regExp $log matchVar subMatchVar1 subMatchVar2]} {
 		puts "<<$matchVar, $subMatchVar1, $subMatchVar2>>"
