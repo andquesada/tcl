@@ -21,8 +21,9 @@ proc processShowIp {ip_addr log} {
 
 proc processShowRunningConfig { ipAddr runLog } {
 	set normalizedIp [ipAddToRegExp $ipAddr]
+	set regExp [ concat {(^.*)} $normalizedIp {(.*$)} ]
 
-	if {[regexp $normalizedIp $runLog matchVar subMatchVar1 subMatchVar2]} {
+	if {[regexp $regExp $runLog matchVar subMatchVar1 subMatchVar2]} {
 		puts "<<$matchVar, $subMatchVar1, $subMatchVar2>>"
 	} else {
 		puts ":("
