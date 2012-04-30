@@ -43,6 +43,29 @@ proc processShowLog { ipAddr runLog } {
 	}
 }
 
+proc lineOfChars { lineLength  } {
+	set line ""
+
+	for {set i 0} {$i < $lineLength} {incr i} {
+		set line [ concat $line\*]
+	}
+
+	return $line
+}
+
+proc printSurroundedLine { line } {
+	set lineLength [string length $line ]
+	set lineLength [expr $lineLength + 4]
+
+	set line [concat  \* $line \* ]
+	set charLine [lineOfChars $lineLength ]
+	puts "$charLine"
+	puts $line
+	puts "$charLine\n"
+}
+
 processShowIp 192.168.10.1 "DEFAULT_VLAN         | Manual     192.168.10.1    255.255.255.0    No    No"
 processShowLog 192.168.10.1 "I 01/01/90 00:22:16 00025 ip: DEFAULT_VLAN: ip address 192.168.10.1/24"
 processShowRunningConfig 192.168.10.1 "ip address 192.168.10.1 255.255.255.0 " 
+
+printSurroundedLine "Esta es una línea de prueba"
