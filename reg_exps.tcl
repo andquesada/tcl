@@ -5,6 +5,7 @@
 # it can be searched within a Regular Expression
 proc ipAddToRegExp { ipAddr } {
 	set normalizedIp [string map { \. \\\. } $ipAddr]
+	set normalizedIp [string trim $normalizedIp]
 	return $normalizedIp
 }
 
@@ -30,6 +31,18 @@ proc processShowRunningConfig { ipAddr runLog } {
 	}
 }
 
+proc processShowLog { ipAddr runLog } {
+	set normalizedIp [ipAddToRegExp $ipAddr]
+	set regExp [ concat {(^.*)} $normalizedIp {(.*$)} ]
+	regsub -all {[ \r\t\n]+} $regExp "" regExp
+
+	if {[regexp $regExp $runLog matchVar subMatchVar1 subMatchVar2]} {
+		puts "<<$matchVar, $subMatchVar1, $subMatchVar2>>"
+	} else {
+		puts ":("
+	}
+}
+
 processShowIp 192.168.10.1 "DEFAULT_VLAN         | Manual     192.168.10.1    255.255.255.0    No    No"
-#procesShowLog 192.168.10.1 "I 01/01/90 00:22:16 00025 ip: DEFAULT_VLAN: ip address 192.168.10.1/24"
+processShowLog 192.168.10.1 "I 01/01/90 00:22:16 00025 ip: DEFAULT_VLAN: ip address 192.168.10.1/24"
 processShowRunningConfig 192.168.10.1 "ip address 192.168.10.1 255.255.255.0 " 
